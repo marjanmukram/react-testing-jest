@@ -8,7 +8,7 @@ import App from './App';
 //   expect(paragraphText).toBeInTheDocument();
 // });
 
-jest.mock('./CheckboxWithLabel', () => () => <div>Hello World</div>);
+jest.mock('./CheckboxWithLabel');
 
 test('renders', () => {
   const {container} = render(<App />);
