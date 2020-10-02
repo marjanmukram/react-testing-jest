@@ -1,8 +1,7 @@
-import React from 'react';
-import { render } from '@testing-library/react';
-import App from './App';
-import CheckboxWithLabel from './CheckboxWithLabel';
-
+import React from "react";
+import { render } from "@testing-library/react";
+import App from "./App";
+import CheckboxWithLabel from "./CheckboxWithLabel";
 
 // Mock
 // test('renders save to reload paragraph', () => {
@@ -10,7 +9,6 @@ import CheckboxWithLabel from './CheckboxWithLabel';
 //   const  paragraphText = getByText(/save to reload/i);
 //   expect(paragraphText).toBeInTheDocument();
 // });
-
 
 // Manual mock
 // jest.mock('./CheckboxWithLabel');
@@ -23,11 +21,12 @@ import CheckboxWithLabel from './CheckboxWithLabel';
 // Advanced mocks
 const MockMyComponent = () => {
   React.useEffect(() => {
-    console.log('using an effect');
+    console.log("using an effect");
   });
-  return (<div>Hello World</div>);
+  return <div>Hello World</div>;
 };
-jest.mock('./CheckboxWithLabel', () => ({
+
+jest.mock("./CheckboxWithLabel", () => ({
   __esModule: true,
   namedExport: jest.fn(),
   default: jest.fn()
@@ -37,8 +36,7 @@ beforeAll(() => {
   CheckboxWithLabel.mockImplementation(MockMyComponent);
 });
 
-test('renders', () => {
-  const { container } = render(<App/>);
-  expect(container.textContent)
-    .toMatch('Hello World');
+test("renders", () => {
+  const { container } = render(<App />);
+  expect(container.textContent).toMatch("Hello World");
 });
