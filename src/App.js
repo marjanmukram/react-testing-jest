@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 // import Link from './Link';
 import CheckboxWithLabel from './CheckboxWithLabel';
+import FavoriteNumber from './favorite-number/favorite-number';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
    
           {/* <Link>www.myname.com</Link> */}
           <CheckboxWithLabel labelOn={"Checked"} labelOff={"Unchecked"} />
+          <FavoriteNumber />
       </header>
     </div>
   );
