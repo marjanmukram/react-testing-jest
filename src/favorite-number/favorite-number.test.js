@@ -17,13 +17,12 @@ test("entering an invalid value should show the error message", () => {
 });
 
 test("entering an invalid vlaue should show the error message with user event", () => {
-  const { getByLabelText, getByRole, rerender, debug } = render(
+  const { getByLabelText, getByRole, rerender, queryByRole } = render(
     <FavoriteNumber />
   );
   const input = getByLabelText(/favorite number/i);
   user.type(input, "10");
   expect(getByRole("alert")).toHaveTextContent(/the number is invalid/i);
-  debug();
-  rerender(<FavoriteNumber max={10} />);
-  debug();
+  rerender(<FavoriteNumber max={11} />);
+  expect(queryByRole("alert")).toBeNull();
 });
