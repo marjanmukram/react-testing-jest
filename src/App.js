@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Link from './Link';
+// import Link from './Link';
 import CheckboxWithLabel from './CheckboxWithLabel';
 
 function App() {
