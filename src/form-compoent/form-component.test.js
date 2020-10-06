@@ -16,6 +16,7 @@ test("FormComponent renders title,content, form button", async () => {
   const fakeUser = {
     id: "user-1"
   };
+  const preDate = new Date().getTime();
   const { getByLabelText, getByText } = render(
     <FormComponent user={fakeUser} />
   );
@@ -24,6 +25,7 @@ test("FormComponent renders title,content, form button", async () => {
   const fakePost = {
     title: "Test title",
     content: "Test content",
+    date: expect.any(String),
     tags: ["tag1", "tag2"]
   };
 
@@ -39,4 +41,8 @@ test("FormComponent renders title,content, form button", async () => {
   await waitFor(() =>
     expect(MockRedirect).toHaveBeenCalledWith({ to: "/" }, {})
   );
+  const postDate = new Date().getTime();
+  const date = new Date(mockSavePost.mock.calls[0][0].date).getTime();
+  expect(date).toBeGreaterThanOrEqual(preDate);
+  expect(date).toBeLessThanOrEqual(postDate);
 });
