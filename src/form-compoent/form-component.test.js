@@ -1,14 +1,18 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react";
+import { render, fireEvent, waitFor } from "@testing-library/react";
+import { Redirect as MockRedirect } from "react-router";
 import { savePost as mockSavePost } from "./api";
 import FormComponent from "./form-component";
 
 jest.mock("./api");
+jest.mock("react-router", () => {
+  return { Redirect: jest.fn(() => null) };
+});
 
-afterEach(()=>{
-    jest.clearAllMocks();
-})
-test("FormComponent renders title,content, form button", () => {
+afterEach(() => {
+  jest.clearAllMocks();
+});
+test("FormComponent renders title,content, form button", async () => {
   const fakeUser = {
     id: "user-1"
   };
@@ -32,4 +36,7 @@ test("FormComponent renders title,content, form button", () => {
   expect(submitButton).toBeDisabled();
   expect(mockSavePost).toBeCalledWith({ ...fakePost, authorId: fakeUser.id });
   expect(mockSavePost).toHaveBeenCalledTimes(1);
+  await waitFor(() =>
+    expect(MockRedirect).toHaveBeenCalledWith({ to: "/" }, {})
+  );
 });

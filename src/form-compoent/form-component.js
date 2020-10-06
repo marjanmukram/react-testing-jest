@@ -1,21 +1,27 @@
 import React from "react";
+import { Redirect } from "react-router";
 import { savePost } from "./api";
 
 const FormComponent = ({ user }) => {
   const [buttonDisabled, setButtonDisabled] = React.useState(false);
+  const [redirect, setRedirect] = React.useState(false);
 
   const handleSubmit = e => {
     e.preventDefault();
     const { title, content, tags } = e.target.elements;
     const newPost = {
-        title: title.value,
-        content: content.value,
-        tags: tags.value.split(",").map(t => t.trim()),
-        authorId: user.id
-      }
+      title: title.value,
+      content: content.value,
+      tags: tags.value.split(",").map(t => t.trim()),
+      authorId: user.id
+    };
     setButtonDisabled(true);
-    savePost(newPost);
+    savePost(newPost).then(() => setRedirect(true));
   };
+
+  if (redirect) {
+    return <Redirect to='/' />;
+  }
 
   return (
     <form onSubmit={handleSubmit}>
