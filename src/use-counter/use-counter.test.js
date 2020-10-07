@@ -35,17 +35,17 @@ test("allows customization of initial count value", () => {
 });
 
 test("allows customization of step value", () => {
-    let result;
-    const TestComponent = () => {
-      result = useCounter({step:2});
-      return null;
-    };
-    render(<TestComponent />);
-    expectExport(result.count).toBe(0);
-  
-    act(() => result.increment());
-    expectExport(result.count).toBe(2);
-  
-    act(() => result.decrement());
-    expectExport(result.count).toBe(0);
-  });
+  let result;
+  const TestComponent = () => {
+    result = useCounter({ step: 2 });
+    return null;
+  };
+  render(<TestComponent />);
+  expectExport(result.count).toBe(0);
+
+  act(() => result.increment());
+  expectExport(result.count).toBe(2);
+
+  act(() => result.decrement());
+  expectExport(result.count).toBe(0);
+});
