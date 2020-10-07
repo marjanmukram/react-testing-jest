@@ -5,6 +5,7 @@ import "./App.css";
 import CheckboxWithLabel from "./CheckboxWithLabel";
 import FavoriteNumber from "./favorite-number/favorite-number";
 import ReactRouterLinks from "./react-router-links/react-router-links";
+import Counter from "./counter/counter";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         {/* <Link>www.myname.com</Link> */}
         <CheckboxWithLabel labelOn={"Checked"} labelOff={"Unchecked"} />
         <FavoriteNumber />
+        <Counter />
       </header>
     </div>
   );
