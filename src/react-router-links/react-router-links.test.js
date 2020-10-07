@@ -6,8 +6,8 @@ test("should render About Us button and navitage to about us page", () => {
   const { getByText, debug, getByRole } = render(<ReactRouterLinks />);
 
   expect(getByRole("heading")).toHaveTextContent(/home/i);
-  console.log(debug());
+  debug();
   fireEvent.click(getByText(/about us/i));
-  console.log(debug());
+  debug();
   expect(getByRole("heading")).toHaveTextContent(/about us/i);
 });
