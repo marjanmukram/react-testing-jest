@@ -24,20 +24,27 @@ const userBuilder = build("User").fields({
   id: sequence(s => `user-${s}`)
 });
 
-test("FormComponent renders title,content, form button", async () => {
-  const fakeUser = userBuilder();
-  const preDate = new Date().getTime();
-  const { getByLabelText, getByText } = render(
-    <FormComponent user={fakeUser} />
-  );
-  mockSavePost.mockResolvedValueOnce();
-
+const renderEditor = () => {
   const fakePost = postBuilder();
+  const fakeUser = userBuilder();
+  const utils = render(<FormComponent user={fakeUser} />);
+  utils.getByLabelText(/title/i).value = fakePost.title;
+  utils.getByLabelText(/content/i).value = fakePost.content;
+  utils.getByLabelText(/tags/i).value = fakePost.tags.join(", ");
+  const submitButton = utils.getByText(/submit/i);
+  return {
+    ...utils,
+    submitButton,
+    fakePost,
+    fakeUser
+  };
+};
 
-  getByLabelText(/title/i).value = fakePost.title;
-  getByLabelText(/content/i).value = fakePost.content;
-  getByLabelText(/tags/i).value = fakePost.tags.join(", ");
-  const submitButton = getByText(/submit/i);
+test("FormComponent renders title,content, form button", async () => {
+  const preDate = new Date().getTime();
+
+  mockSavePost.mockResolvedValueOnce();
+  const { submitButton, fakePost, fakeUser } = renderEditor();
   expect(submitButton).not.toBeDisabled();
   fireEvent.click(submitButton);
   expect(submitButton).toBeDisabled();
@@ -55,4 +62,15 @@ test("FormComponent renders title,content, form button", async () => {
   const date = new Date(mockSavePost.mock.calls[0][0].date).getTime();
   expect(date).toBeGreaterThanOrEqual(preDate);
   expect(date).toBeLessThanOrEqual(postDate);
+});
+
+test("FormComponent renders an error message from the server", async () => {
+  const testError = "test error";
+  mockSavePost.mockRejectedValueOnce({ data: { error: testError } });
+  const { submitButton, findByRole } = renderEditor();
+
+  fireEvent.click(submitButton);
+  const postError = await findByRole("alert");
+  expect(postError).toHaveTextContent(testError);
+  expect(submitButton).not.toBeDisabled();
 });

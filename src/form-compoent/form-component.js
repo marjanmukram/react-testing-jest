@@ -5,6 +5,7 @@ import { savePost } from "./api";
 const FormComponent = ({ user }) => {
   const [buttonDisabled, setButtonDisabled] = React.useState(false);
   const [redirect, setRedirect] = React.useState(false);
+  const [error, setError] = React.useState(null);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -17,7 +18,13 @@ const FormComponent = ({ user }) => {
       authorId: user.id
     };
     setButtonDisabled(true);
-    savePost(newPost).then(() => setRedirect(true));
+    savePost(newPost).then(
+      () => setRedirect(true),
+      err => {
+        setError(err.data.error);
+        setButtonDisabled(false);
+      }
+    );
   };
 
   if (redirect) {
@@ -38,6 +45,7 @@ const FormComponent = ({ user }) => {
       <button type='submit' disabled={buttonDisabled}>
         Submit
       </button>
+      {error ? <div role='alert'>{error}</div> : null}
     </form>
   );
 };
