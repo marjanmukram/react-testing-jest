@@ -16,8 +16,7 @@ afterEach(() => {
 
 const postBuilder = build("Post").fields({
   title: fake(f => f.lorem.words()),
-  content: fake(f => f.lorem.paragraphs().replace(/\r/g,'')),
-  date: expect.any(String),
+  content: fake(f => f.lorem.paragraphs().replace(/\r/g, "")),
   tags: fake(f => [f.lorem.words(), f.lorem.words(), f.lorem.words()])
 });
 
@@ -42,11 +41,15 @@ test("FormComponent renders title,content, form button", async () => {
   expect(submitButton).not.toBeDisabled();
   fireEvent.click(submitButton);
   expect(submitButton).toBeDisabled();
- 
+
   await waitFor(() =>
     expect(MockRedirect).toHaveBeenCalledWith({ to: "/" }, {})
   );
-  expect(mockSavePost).toBeCalledWith({ ...fakePost, authorId: fakeUser.id });
+  expect(mockSavePost).toBeCalledWith({
+    ...fakePost,
+    date: expect.any(String),
+    authorId: fakeUser.id
+  });
   expect(mockSavePost).toHaveBeenCalledTimes(1);
   const postDate = new Date().getTime();
   const date = new Date(mockSavePost.mock.calls[0][0].date).getTime();
