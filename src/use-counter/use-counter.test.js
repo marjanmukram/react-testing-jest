@@ -1,18 +1,8 @@
-import React from "react";
-import { render, act } from "@testing-library/react";
+import { renderHook, act } from "@testing-library/react-hooks";
 import { useCounter } from "./use-counter";
 
-const setup = ({ initialProps } = {}) => {
-  const result = {};
-  const TestComponent = props => {
-    result.current = useCounter(props);
-    return null;
-  };
-  render(<TestComponent {...initialProps} />);
-  return result;
-};
 test("exposes count and increment/decrement functions", () => {
-  const result = setup();
+  const { result } = renderHook(useCounter);
   expect(result.current.count).toBe(0);
 
   act(() => result.current.increment());
@@ -23,7 +13,7 @@ test("exposes count and increment/decrement functions", () => {
 });
 
 test("allows customization of initial count value", () => {
-  const result = setup({ initialProps: { initialCount: 2 } });
+  const {result} = renderHook(useCounter, { initialProps: { initialCount: 2 } });
   expect(result.current.count).toBe(2);
   act(() => result.current.increment());
   expect(result.current.count).toBe(3);
@@ -33,7 +23,7 @@ test("allows customization of initial count value", () => {
 });
 
 test("allows customization of step value", () => {
-  const result = setup({ initialProps: { step: 2 } });
+  const {result} = renderHook(useCounter, { initialProps: { step: 2 } });
   expect(result.current.count).toBe(0);
 
   act(() => result.current.increment());
