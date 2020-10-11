@@ -1,51 +1,44 @@
 import React from "react";
 import { render, act } from "@testing-library/react";
 import { useCounter } from "./use-counter";
-import expectExport from "expect";
 
-test("exposes count and increment/decrement functions", () => {
-  let result;
-  const TestComponent = () => {
-    result = useCounter();
+const setup = ({ initialProps } = {}) => {
+  const result = {};
+  const TestComponent = props => {
+    result.current = useCounter(props);
     return null;
   };
-  render(<TestComponent />);
-  expectExport(result.count).toBe(0);
+  render(<TestComponent {...initialProps} />);
+  return result;
+};
+test("exposes count and increment/decrement functions", () => {
+  const result = setup();
+  expect(result.current.count).toBe(0);
 
-  act(() => result.increment());
-  expectExport(result.count).toBe(1);
+  act(() => result.current.increment());
+  expect(result.current.count).toBe(1);
 
-  act(() => result.decrement());
-  expectExport(result.count).toBe(0);
+  act(() => result.current.decrement());
+  expect(result.current.count).toBe(0);
 });
 
 test("allows customization of initial count value", () => {
-  let result;
-  const TestComponent = () => {
-    result = useCounter({ initialCount: 2 });
-    return null;
-  };
-  render(<TestComponent />);
-  expectExport(result.count).toBe(2);
-  act(() => result.increment());
-  expectExport(result.count).toBe(3);
+  const result = setup({ initialProps: { initialCount: 2 } });
+  expect(result.current.count).toBe(2);
+  act(() => result.current.increment());
+  expect(result.current.count).toBe(3);
 
-  act(() => result.decrement());
-  expectExport(result.count).toBe(2);
+  act(() => result.current.decrement());
+  expect(result.current.count).toBe(2);
 });
 
 test("allows customization of step value", () => {
-  let result;
-  const TestComponent = () => {
-    result = useCounter({ step: 2 });
-    return null;
-  };
-  render(<TestComponent />);
-  expectExport(result.count).toBe(0);
+  const result = setup({ initialProps: { step: 2 } });
+  expect(result.current.count).toBe(0);
 
-  act(() => result.increment());
-  expectExport(result.count).toBe(2);
+  act(() => result.current.increment());
+  expect(result.current.count).toBe(2);
 
-  act(() => result.decrement());
-  expectExport(result.count).toBe(0);
+  act(() => result.current.decrement());
+  expect(result.current.count).toBe(0);
 });
