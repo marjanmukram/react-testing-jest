@@ -13,7 +13,9 @@ test("exposes count and increment/decrement functions", () => {
 });
 
 test("allows customization of initial count value", () => {
-  const {result} = renderHook(useCounter, { initialProps: { initialCount: 2 } });
+  const { result } = renderHook(useCounter, {
+    initialProps: { initialCount: 2 }
+  });
   expect(result.current.count).toBe(2);
   act(() => result.current.increment());
   expect(result.current.count).toBe(3);
@@ -23,7 +25,7 @@ test("allows customization of initial count value", () => {
 });
 
 test("allows customization of step value", () => {
-  const {result} = renderHook(useCounter, { initialProps: { step: 2 } });
+  const { result } = renderHook(useCounter, { initialProps: { step: 2 } });
   expect(result.current.count).toBe(0);
 
   act(() => result.current.increment());
@@ -31,4 +33,19 @@ test("allows customization of step value", () => {
 
   act(() => result.current.decrement());
   expect(result.current.count).toBe(0);
+});
+
+test("step can be changed", () => {
+  const { result, rerender } = renderHook(useCounter, {
+    initialProps: { step: 3 }
+  });
+  expect(result.current.count).toBe(0);
+
+  act(() => result.current.increment());
+  expect(result.current.count).toBe(3);
+
+  rerender({ step: 2 });
+
+  act(() => result.current.decrement());
+  expect(result.current.count).toBe(1);
 });
